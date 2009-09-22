@@ -12,7 +12,7 @@ namespace :db do
 
 		desc "Dump contents of database to db/data.yml"
 		task(:dump => :environment) do
-			YamlDb.dump db_dump_data_file
+			YamlDb.dump db_dump_data_file, ENV['TABLE']
 		end
 
 		desc "Load contents of db/data.yml into database"

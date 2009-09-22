@@ -8,12 +8,14 @@ Any database that has an ActiveRecord adapter should work.
 
 == Usage
 
-rake db:data:dump   ->   Dump contents of Rails database to db/data.yml
-rake db:data:load   ->   Load contents of db/data.yml into the database
+rake db:data:dump [TABLE=xxx]  ->  Dump contents of Rails database to db/data.yml, you can specify the table you want to dump by providing the TABLE option, if it's a bunch of tables you want to dump, specify the table names separated by comma.
+rake db:data:load              ->  Load contents of db/data.yml into the database
 
 Further, there are tasks db:dump and db:load which do the entire database (the equivalent of running db:schema:dump followed by db:data:load).
 
 == Examples
+
+=== Dump all the tables in MySQL, and load the data to another database backend.
 
 One common use would be to switch your data from one database backend to another.  For example, let's say you wanted to switch from SQLite to MySQL.  You might execute the following steps:
 
@@ -21,9 +23,17 @@ One common use would be to switch your data from one database backend to another
 
 2. Edit config/database.yml and change your adapter to mysql, set up database params
 
-3. mysqladmin create [database name]
+3. rake db:drop; rake db:create; rake db:migrate
 
 4. rake db:load
+
+=== Dump the specified table but all tables in the database.
+
+1. rake db:dump TABLE=users
+
+=== Dump several tables at one time
+
+1. rake db:dump TABLE=users,profiles
 
 == Credits
 

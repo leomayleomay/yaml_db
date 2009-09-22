@@ -4,9 +4,9 @@ require 'active_record'
 
 
 module YamlDb
-	def self.dump(filename)
+	def self.dump(filename, table_names = nil)
 		disable_logger
-		YamlDb::Dump.dump(File.new(filename, "w"))
+		YamlDb::Dump.dump(File.new(filename, "w"), table_names)
 		reenable_logger
 	end
 
@@ -73,10 +73,10 @@ end
 
 
 module YamlDb::Dump
-	def self.dump(io)
-		tables.each do |table|
-			dump_table(io, table)
-		end
+	def self.dump(io, table_names)
+		table_names.split(',').each { |table| dump_table(io, table) }
+	rescue NoMethodError # In case the table_names is nil
+		tables.each { |table| dump_table(io, table) }
 	end
 
 	def self.tables
